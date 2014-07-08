@@ -1,0 +1,62 @@
+Ask Your Friends - an App for Android
+
+Functional Specification
+
+Summary
+The idea behind this app is to create a very simple way to ask your friends a multiple choice question and get their replies back so that you can see how they voted. The original idea was to use text messaging to send out the question and to get people to reply to that text. Replies can then be read by the app and the results viewed.
+
+Assumptions
+This document will make the following assumptions regarding the Android platform on which is working.
+•	Text Messaging – This service must be available as the questions and answers will be sent via text messaging. The reason for choosing Text Messaging was that all phones will have this feature and that (in the UK at least) the majority of users will have an allowance for text messaging without incurring additional expense. Text Messaging is also still the most popular method of non-voice communication.
+
+Outstanding Questions and Suggestions for Future Versions
+•	Do we offer spell checking for the question and answers?
+•	Can we check that the message is sent to all jurors?
+•	We could have a setting to allow questions to be sent over multiple text messages?
+•	Should we allow for additional instructions on how to reply to a survey to be sent in a message just before the survey is sent?
+•	If the juror has the app installed, could the app intercept incoming questions and allow them to be handled by the app, rather than just as a normal incoming text message?
+•	How do we handle votes when more than one survey is sent to the same juror?
+
+Design Ideas
+Surveys
+A survey refers to a single, complete, question and answer session. It has the following components.
+•	Owner – This is the person asking the question. This is by definition the owner of the app.
+•	Question – A single text question. The maximum length of the question will be around 120 characters.
+•	Answer – Each survey should have multiple answers as defined by the owner. As many answers as required are allowed, but the question and answers, with any required additional spacing and formatting must fit within the limitations of the carrier; in this case the text message.
+•	Juror – This is a contact, as selected from the owners contact list, to which the question (and answers) should be sent. Each survey has multiple jurors.
+•	Vote – Each juror is asked to reply to the original question stating the number of the answer for which they wish to vote. The incoming votes are intercepted by the app to give the owner a summary of the votes cast.
+•	Comments – An incoming vote can be followed by text that will be considered a comment.
+All surveys (complete and incomplete) are stored in on the Android device.
+
+Creating a Survey
+1.	The owner is asked for the question.
+2.	The owner is asked for the possible answers to the question.
+3.	The full text message including question and answers is shown (and validated). The owner should be able to see the exact content of the text message that will be sent to allow them to modify the question and answers to make it fit as desired.
+4.	The owner is asked to select the contacts to which the survey should be sent.
+5.	The full message and jury list are shown and the owner asked to send the message.
+6.	The app returns to the main screen.
+
+Receiving Votes
+The app would have to have a service running to intercept in coming text messages. Any message coming in from a contact to whom a question had been sent would be scanned. If it is recognised as a possible reply, the message can be shown to the user and they can confirm if this is an answer to the latest (or all) questions. The rules to identify votes can be found below.
+
+Identifying Votes
+In order for the app to consider an incoming text message to be the answer to a survey it must meet the following criteria.
+•	The sender must be a contact that has been sent a survey.
+•	The incoming message must start with a number that was an option on the survey.
+If a message is identified as a vote, the vote may be followed by a comment. This comment will be saved with the vote.
+
+Showing the Verdict
+A survey that has had at least one vote cast can show the results. These can be shown as a table of votes cast, a graph of votes cast and a table of comments that accompanied votes.
+
+Reminders
+Any survey that has been sent can have reminders sent out to jurors that have not replied. Additional “reminder” text may be sent with the original message if there is room.
+
+Screen Navigation
+
+Main Screen
+ 
+Survey Screen
+
+Results Screen
+
+Settings Screen
