@@ -3,7 +3,7 @@ Ask Your Friends - an App for Android
 Functional Specification
 
 Summary
-The idea behind this app is to create a very simple way to ask your friends a multiple choice question and get their replies back so that you can see how they voted. The original idea was to use text messaging to send out the question and to get people to reply to that text. Replies can then be read by the app and the results viewed.
+The idea behind this app is to create a very simple way to ask your friends a multiple choice question and get their replies back so that you can see how they voted. The initial idea is to use text messaging to send out the question and to get people to reply to that text. Replies can then be read by the app and the results viewed.
 
 Assumptions
 This document will make the following assumptions regarding the Android platform on which is working.
@@ -16,6 +16,8 @@ Outstanding Questions and Suggestions for Future Versions
 •	Should we allow for additional instructions on how to reply to a survey to be sent in a message just before the survey is sent?
 •	If the juror has the app installed, could the app intercept incoming questions and allow them to be handled by the app, rather than just as a normal incoming text message?
 •	How do we handle votes when more than one survey is sent to the same juror?
+• How to manage security? We need to keep track of the ID of each of the jurors taking part in a survey. If we encrypt the phone number of a juror and use this as their key, that should maintain security and continuity of voting.
+• All surveys (complete and incomplete) should be stored in on the Android device, probably in the DB.
 
 Design Ideas
 Surveys
@@ -26,12 +28,11 @@ A survey refers to a single, complete, question and answer session. It has the f
 •	Juror – This is a contact, as selected from the owners contact list, to which the question (and answers) should be sent. Each survey has multiple jurors.
 •	Vote – Each juror is asked to reply to the original question stating the number of the answer for which they wish to vote. The incoming votes are intercepted by the app to give the owner a summary of the votes cast.
 •	Comments – An incoming vote can be followed by text that will be considered a comment.
-All surveys (complete and incomplete) are stored in on the Android device.
 
 Creating a Survey
 1.	The owner is asked for the question.
 2.	The owner is asked for the possible answers to the question.
-3.	The full text message including question and answers is shown (and validated). The owner should be able to see the exact content of the text message that will be sent to allow them to modify the question and answers to make it fit as desired.
+3.	The full text message including preamble, question and answers is shown (and validated). The owner should be able to see the exact content of the text message that will be sent to allow them to modify the question and answers to make it fit as desired.
 4.	The owner is asked to select the contacts to which the survey should be sent.
 5.	The full message and jury list are shown and the owner asked to send the message.
 6.	The app returns to the main screen.
@@ -52,11 +53,16 @@ Reminders
 Any survey that has been sent can have reminders sent out to jurors that have not replied. Additional “reminder” text may be sent with the original message if there is room.
 
 Screen Navigation
+* Requires design
 
 Main Screen
+* Requires design
  
 Survey Screen
+* Requires design
 
 Results Screen
+* Requires design
 
 Settings Screen
+* Requires design
