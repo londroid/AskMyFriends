@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_a_2l0CYoEeS_sreYmxwAMg" name="AskMyFriends App">
+  <ownedComment xmi:id="_Qb_RkCZAEeS_sreYmxwAMg" annotatedElement="_a_2l0CYoEeS_sreYmxwAMg"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_VtfEkCY5EeS_sreYmxwAMg" name="Owner"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_5frVkCY5EeS_sreYmxwAMg" name="Juror"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_9BB8cCY5EeS_sreYmxwAMg" name="Create Survey">
+    <ownedBehavior xmi:type="uml:Activity" xmi:id="_lEV1oCZAEeS_sreYmxwAMg" name="Create Survey activity" node="_qW5UYCZAEeS_sreYmxwAMg _tKh5oCZAEeS_sreYmxwAMg _JCVuACZBEeS_sreYmxwAMg">
+      <node xmi:type="uml:InitialNode" xmi:id="_qW5UYCZAEeS_sreYmxwAMg" name="InitialNode1"/>
+      <node xmi:type="uml:InitialNode" xmi:id="_tKh5oCZAEeS_sreYmxwAMg" name="InitialNode2"/>
+      <node xmi:type="uml:OpaqueAction" xmi:id="_JCVuACZBEeS_sreYmxwAMg" name="Create Question">
+        <body>// TODO body of OpaqueAction1</body>
+      </node>
+    </ownedBehavior>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_NuGWsCY6EeS_sreYmxwAMg" name="Check Results"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_Qup9oCY6EeS_sreYmxwAMg" name="Vote"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_ZN4zwCY6EeS_sreYmxwAMg" name="Configure App"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_fTITsCY6EeS_sreYmxwAMg" name="Send Vote Requests">
+    <include xmi:id="_5ABvsCY6EeS_sreYmxwAMg" addition="_9BB8cCY5EeS_sreYmxwAMg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_6oHH0CY6EeS_sreYmxwAMg" name="Send Vote">
+    <include xmi:id="_8I_EsCY6EeS_sreYmxwAMg" addition="_Qup9oCY6EeS_sreYmxwAMg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Xl5s0CY7EeS_sreYmxwAMg" memberEnd="_Xl5s0SY7EeS_sreYmxwAMg _Xl5s0iY7EeS_sreYmxwAMg">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_Xl5s0SY7EeS_sreYmxwAMg" type="_5frVkCY5EeS_sreYmxwAMg" association="_Xl5s0CY7EeS_sreYmxwAMg"/>
+    <ownedEnd xmi:id="_Xl5s0iY7EeS_sreYmxwAMg" type="_Qup9oCY6EeS_sreYmxwAMg" association="_Xl5s0CY7EeS_sreYmxwAMg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_YepSsCY7EeS_sreYmxwAMg" memberEnd="_YepSsSY7EeS_sreYmxwAMg _Yep5wCY7EeS_sreYmxwAMg">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_YepSsSY7EeS_sreYmxwAMg" type="_VtfEkCY5EeS_sreYmxwAMg" association="_YepSsCY7EeS_sreYmxwAMg"/>
+    <ownedEnd xmi:id="_Yep5wCY7EeS_sreYmxwAMg" type="_9BB8cCY5EeS_sreYmxwAMg" association="_YepSsCY7EeS_sreYmxwAMg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_ZMa-sCY7EeS_sreYmxwAMg" memberEnd="_ZMa-sSY7EeS_sreYmxwAMg _ZMblwCY7EeS_sreYmxwAMg">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_ZMa-sSY7EeS_sreYmxwAMg" type="_VtfEkCY5EeS_sreYmxwAMg" association="_ZMa-sCY7EeS_sreYmxwAMg"/>
+    <ownedEnd xmi:id="_ZMblwCY7EeS_sreYmxwAMg" type="_NuGWsCY6EeS_sreYmxwAMg" association="_ZMa-sCY7EeS_sreYmxwAMg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Z23C0CY7EeS_sreYmxwAMg" memberEnd="_Z23p4CY7EeS_sreYmxwAMg _Z23p4SY7EeS_sreYmxwAMg">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_Z23p4CY7EeS_sreYmxwAMg" type="_VtfEkCY5EeS_sreYmxwAMg" association="_Z23C0CY7EeS_sreYmxwAMg"/>
+    <ownedEnd xmi:id="_Z23p4SY7EeS_sreYmxwAMg" type="_ZN4zwCY6EeS_sreYmxwAMg" association="_Z23C0CY7EeS_sreYmxwAMg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_SkNCoCY9EeS_sreYmxwAMg" memberEnd="_SkNpsCY9EeS_sreYmxwAMg _SkNpsSY9EeS_sreYmxwAMg">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_SkNpsCY9EeS_sreYmxwAMg" type="_fTITsCY6EeS_sreYmxwAMg" association="_SkNCoCY9EeS_sreYmxwAMg"/>
+    <ownedEnd xmi:id="_SkNpsSY9EeS_sreYmxwAMg" type="_5frVkCY5EeS_sreYmxwAMg" association="_SkNCoCY9EeS_sreYmxwAMg"/>
+  </packagedElement>
+</uml:Model>
