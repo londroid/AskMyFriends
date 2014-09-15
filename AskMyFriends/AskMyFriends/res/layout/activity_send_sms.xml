@@ -1,0 +1,177 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.londroid.askmyfriends.SendSMS" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tvQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="@string/question" />
+
+            <TextView
+                android:id="@+id/tvOptionA"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/tvQuestion"
+                android:gravity="center"
+                android:text="@string/option_a" />
+
+            <TextView
+                android:id="@+id/tvOptionB"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/tvOptionA"
+                android:gravity="center"
+                android:text="@string/option_b" />
+
+            <TextView
+                android:id="@+id/tvOptionC"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/tvOptionB"
+                android:gravity="center"
+                android:text="@string/option_c" />
+
+            <TextView
+                android:id="@+id/tvOptionD"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/tvOptionC"
+                android:gravity="center"
+                android:text="@string/option_d" />
+
+            <TextView
+                android:id="@+id/tvFriend1"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/tvOptionD"
+                android:gravity="center"
+                android:text="@string/friend_1" />
+
+            <TextView
+                android:id="@+id/tvFriend2"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/tvFriend1"
+                android:gravity="center"
+                android:text="@string/friend_2" />
+
+            <TextView
+                android:id="@+id/tvFriend3"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_below="@+id/tvFriend2"
+                android:gravity="center"
+                android:text="@string/friend_3" />
+
+            <EditText
+                android:id="@+id/etQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/tvQuestion"
+                android:ems="8" >
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/etOptionA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvOptionA"
+                android:layout_alignLeft="@+id/etQuestion"
+                android:ems="8" />
+
+            <EditText
+                android:id="@+id/etOptionB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvOptionB"
+                android:layout_alignLeft="@+id/etQuestion"
+                android:ems="8" />
+
+            <EditText
+                android:id="@+id/etOptionC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvOptionC"
+                android:layout_alignLeft="@+id/etQuestion"
+                android:ems="8" />
+
+            <EditText
+                android:id="@+id/etOptionD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvOptionD"
+                android:layout_alignLeft="@+id/etQuestion"
+                android:ems="8" />
+
+            <EditText
+                android:id="@+id/etFriend1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvFriend1"
+                android:layout_alignLeft="@+id/etQuestion"
+                android:ems="8"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/etFriend2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvFriend2"
+                android:layout_alignLeft="@+id/etQuestion"
+                android:ems="8"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/etFriend3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tvFriend3"
+                android:layout_alignLeft="@+id/etQuestion"
+                android:ems="8"
+                android:inputType="phone" />
+
+            <Button
+                android:id="@+id/btSendQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvFriend3"
+                android:layout_centerHorizontal="true"
+                android:onClick="sendSMS"
+                android:text="@string/send_question" />
+
+            <TextView
+                android:id="@+id/tvQuestionMark"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_alignBaseline="@+id/tvQuestion"
+                android:layout_toRightOf="@+id/etQuestion"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:text="@string/questionMark" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
