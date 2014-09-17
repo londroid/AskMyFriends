@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.londroid.askmyfriends.SendSMS" >
+    tools:context="com.londroid.askmyfriends.activities.SendSMS" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,6 +61,7 @@
 
             <TextView
                 android:id="@+id/tvFriend1"
+                android:labelFor="@+id/etFriend1"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_below="@+id/tvOptionD"
@@ -126,14 +127,16 @@
                 android:layout_alignLeft="@+id/etQuestion"
                 android:ems="8" />
 
-            <EditText
-                android:id="@+id/etFriend1"
+               <AutoCompleteTextView
+                android:id="@+id/atFriend1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvFriend1"
                 android:layout_alignLeft="@+id/etQuestion"
                 android:ems="8"
-                android:inputType="phone" />
+                android:singleLine="true"
+                android:completionThreshold="1" />
+
 
             <EditText
                 android:id="@+id/etFriend2"
@@ -153,15 +156,7 @@
                 android:ems="8"
                 android:inputType="phone" />
 
-            <Button
-                android:id="@+id/btSendQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvFriend3"
-                android:layout_centerHorizontal="true"
-                android:onClick="sendSMS"
-                android:text="@string/send_question" />
-
+     
             <TextView
                 android:id="@+id/tvQuestionMark"
                 android:layout_width="wrap_content"
@@ -171,6 +166,16 @@
                 android:layout_marginLeft="8dp"
                 android:gravity="center"
                 android:text="@string/questionMark" />
+            
+            <Button
+                android:id="@+id/btSendQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvFriend3"
+                android:layout_centerHorizontal="true"
+                android:onClick="sendSMS"
+                android:text="@string/send_question" />
+            
         </RelativeLayout>
     </LinearLayout>
 

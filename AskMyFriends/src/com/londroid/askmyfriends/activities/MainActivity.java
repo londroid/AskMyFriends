@@ -1,4 +1,9 @@
-package com.londroid.askmyfriends;
+package com.londroid.askmyfriends.activities;
+
+import com.londroid.askmyfriends.R;
+import com.londroid.askmyfriends.R.id;
+import com.londroid.askmyfriends.R.layout;
+import com.londroid.askmyfriends.R.menu;
 
 import android.content.Context;
 import android.content.Intent;

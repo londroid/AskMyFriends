@@ -16,5 +16,6 @@
     <string name="friend_3">Friend 3</string>
     <string name="send_question">Send Question</string>
     <string name="questionMark">\?</string>
+    <string name="sample_text">Sample Text</string>
 
 </resources>

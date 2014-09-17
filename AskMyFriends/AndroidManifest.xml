@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.londroid.askmyfriends.activities.MainActivity"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SendSMS"
+            android:name="com.londroid.askmyfriends.activities.SendSMS"
             android:label="@string/app_name"
             android:permission="android.permission.SEND_SMS" >
         </activity>
