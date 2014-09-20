@@ -2,43 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_single_contact_main"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="50dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:layout_margin="5dp" >
 
-    <ImageView
-        android:id="@+id/iv_contact_photo"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:contentDescription="@string/photo_desc"
-        android:background="@drawable/ic_contact_picture" >
-    </ImageView>
-
     <LinearLayout
         android:id="@+id/ll_single_contact_textinfo"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_weight=".80"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:layout_margin="5dp" >
 
-    <TextView
-        android:id="@+id/tv_contact_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/tv_contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/black" />
 
-    <TextView
-        android:id="@+id/tv_contact_phone_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/tv_contact_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="13dp"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_contact_photo"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight=".15"
+        android:layout_margin="5dp"
+        android:contentDescription="@string/photo_desc">
+    </ImageView>
+
 
 
 </LinearLayout>

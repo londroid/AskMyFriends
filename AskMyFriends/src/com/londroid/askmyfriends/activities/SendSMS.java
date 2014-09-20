@@ -5,28 +5,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.app.LoaderManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.londroid.askmyfriends.R;
 import com.londroid.askmyfriends.activities.helpers.SendSMSHelper;
 import com.londroid.askmyfriends.activities.helpers.SendSMSViewData;
-import com.londroid.askmyfriends.persistence.contentprovider.ContactDto;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactInfoAdapter;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactLoader;
 
@@ -38,12 +32,11 @@ public class SendSMS extends ActionBarActivity {
 	private ContactsAutoCompleteTextView mFriend1;
 	
 	private SendSMSHelper sendSmsHelper;
-	
-	private ContactInfoAdapter contactAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_send_sms);
 
 		mQuestion = (EditText) findViewById(R.id.etQuestion);
@@ -57,36 +50,10 @@ public class SendSMS extends ActionBarActivity {
 		
 		sendSmsHelper = SendSMSHelper.setupAndGet(SendSMS.this);
 		
-		// set the adapter
-		this.contactAdapter = new ContactInfoAdapter(this, R.layout.single_contact, null, 0);
-		mFriend1.setAdapter(contactAdapter);
-        
-		mFriend1.setOnItemClickListener(new OnItemClickListener() {
-			 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-                 
-                LinearLayout ll = (LinearLayout) arg1;
-                TextView tv = (TextView) ll.findViewById(R.id.tv_contact_phone_number);
-                mFriend1.setText(tv.getText().toString());
-                 
-            }
-
-        });
-		
-		ContactLoader contactLoader = new ContactLoader(this, contactAdapter);
-	
-		// Initialize the loader
-		getLoaderManager().initLoader(0, null, contactLoader);
-		mFriend1.setLoaderManager(getLoaderManager());
-		mFriend1.setContactLoader(contactLoader);
-		
-		Log.w("AMF","Setup completed.");
-
+		setupContactView(mFriend1);
 	}
 	
 	
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -105,6 +72,34 @@ public class SendSMS extends ActionBarActivity {
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * Setup of contact info adapter using Cursor loader and custom autocomplete view ----
+	 */
+	private void setupContactView(final ContactsAutoCompleteTextView contactsView) {
+		
+		// Setup custom list adapter extending cursor adapter
+		ContactInfoAdapter contactAdapter = new ContactInfoAdapter(this, R.layout.single_contact, null, 0);
+		contactsView.setAdapter(contactAdapter);
+		
+		// Write the phone number in the view when clicking on a contact from the list
+		contactsView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {    
+                LinearLayout ll = (LinearLayout) arg1;
+                TextView tv = (TextView) ll.findViewById(R.id.tv_contact_phone_number);
+                contactsView.setText(tv.getText().toString());
+            }
+        });
+		
+		// Setup the contact loader from the content provider
+		LoaderManager loaderManager = getLoaderManager();
+		ContactLoader contactLoader = new ContactLoader(this, loaderManager, contactAdapter);
+		loaderManager.initLoader(0, null, contactLoader);
+		contactsView.setContactLoader(contactLoader);
+		
+		Log.w("AMF","Contacts view setup completed.");
 	}
 	
 	public void sendSMS(View view) {
@@ -133,49 +128,10 @@ public class SendSMS extends ActionBarActivity {
 		
 		String question = mQuestion.getText().toString();
 		
-		
 		viewData.setOptions(options);
 		viewData.setQuestion(question);
 		viewData.setPhoneNumbers(phoneNumbers);
 
 		return viewData;
-	}
-	
-	
-	//TODO: This should be in a reusable activity helper (FillViewWithContactData)
-	
-	/**
-	 * This is called by a list-type adapter when a an existing view can be reused
-	 * 
-	 */
-	public void bindDataToSingleContactView(ContactDto contactInfo, View view) {
-		
-		// Name of the contact
-		TextView nameTextView = (TextView) view.findViewById(R.id.tv_contact_name);
-		nameTextView.setText(contactInfo.getContactName());
-
-		// Phone number of the contact
-		TextView phoneNumbeTextView = (TextView) view.findViewById(R.id.tv_contact_phone_number);
-		phoneNumbeTextView.setText(contactInfo.getPhoneNumber());		
-		
-		// Picture of the contact
-		ImageView imageView = (ImageView) view.findViewById(R.id.iv_contact_photo);
-		Bitmap contactPhotoBitmap = contactInfo.getContactThumbnail();
-		
-		if (contactPhotoBitmap == null) {
-			contactPhotoBitmap = BitmapFactory.decodeResource(getResources(),
-					R.drawable.ic_contact_picture);
-		} 	
-
-		imageView.setImageBitmap(contactPhotoBitmap);
-	}
-	
-	/**
-	 * This is called by a list-type adapter when requesting a new view
-	 *  
-	 */
-	public View bindNewDataToSingleContactView(ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);	
-		return inflater.inflate(R.layout.single_contact, parent, false);
 	}
 }

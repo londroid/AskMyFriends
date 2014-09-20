@@ -1,26 +1,14 @@
 package com.londroid.askmyfriends.activities.helpers;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.ContactsContract.Contacts;
 import android.telephony.SmsManager;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class SendSMSHelper {
 
@@ -52,21 +40,6 @@ public class SendSMSHelper {
 	private void initPreferences() {
 		this.preferences = activityContext.getSharedPreferences(QUESTION_RESULTS_PREFERENCE_KEY, Context.MODE_PRIVATE);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public void sendSMS(SendSMSViewData smsActivityViewData) {
 
@@ -121,6 +94,5 @@ public class SendSMSHelper {
 		// Commit the edits!
 		editor.commit();
 	}
-	
 	
 }

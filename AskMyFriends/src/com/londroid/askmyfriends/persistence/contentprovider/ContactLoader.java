@@ -1,6 +1,7 @@
 package com.londroid.askmyfriends.persistence.contentprovider;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -8,12 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds;
 
-import com.londroid.askmyfriends.activities.SendSMS;
-
 public class ContactLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 	
 	private ContactInfoAdapter contactAdapter;
-	private SendSMS smsActivity;
+	private LoaderManager loaderManager;
+	private Context context;
 	
 	// Contacts data
 	private static final String[] CONTACTS_ROWS = new String[] {
@@ -23,9 +23,10 @@ public class ContactLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 				CommonDataKinds.Phone.NUMBER
 	};
 	
-	public ContactLoader(SendSMS smsActivity, ContactInfoAdapter adapter) {
+	public ContactLoader(Context context, LoaderManager loaderManager, ContactInfoAdapter adapter) {
 		this.contactAdapter = adapter;
-		this.smsActivity = smsActivity;
+		this.context = context;
+		this.loaderManager = loaderManager;
 	}
 
 	@Override
@@ -33,20 +34,17 @@ public class ContactLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 		
 		String filterString =  args == null ? "A" : args.getString("filterString", "A");
 		
-//		// String used to filter contacts 
+		// String used to filter contacts 
 		String select = "((" + CommonDataKinds.Phone.DISPLAY_NAME + " NOTNULL) AND ("
 				+ CommonDataKinds.Phone.DISPLAY_NAME + " != '') AND ( " +
 				  CommonDataKinds.Phone.DISPLAY_NAME +" LIKE ? ))";
-//
-//		// String used for defining the sort order
+
+		// String used for defining the sort order
 		String sortOrder = CommonDataKinds.Phone.DISPLAY_NAME + " ASC";
-//
-//	    return new CursorLoader(smsActivity, Contacts.CONTENT_URI, CONTACTS_ROWS,
-//						select, null, sortOrder);
 	    
 	    Uri uri = CommonDataKinds.Phone.CONTENT_URI;
-	    return new CursorLoader(smsActivity, uri, CONTACTS_ROWS, select, new String[]{ filterString + "%"}, sortOrder);
 	    
+	    return new CursorLoader(context, uri, CONTACTS_ROWS, select, new String[]{ filterString + "%"}, sortOrder);
 	}
 	
 	@Override
@@ -58,6 +56,10 @@ public class ContactLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		contactAdapter.swapCursor(null);
+	}
+	
+	public void restart(Bundle args) {
+		loaderManager.restartLoader(0, args, this);
 	}
 	
 }

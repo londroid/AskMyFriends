@@ -97,7 +97,7 @@
 
             <EditText
                 android:id="@+id/etOptionA"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvOptionA"
                 android:layout_alignLeft="@+id/etQuestion"
@@ -105,7 +105,7 @@
 
             <EditText
                 android:id="@+id/etOptionB"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvOptionB"
                 android:layout_alignLeft="@+id/etQuestion"
@@ -113,7 +113,7 @@
 
             <EditText
                 android:id="@+id/etOptionC"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvOptionC"
                 android:layout_alignLeft="@+id/etQuestion"
@@ -121,7 +121,7 @@
 
             <EditText
                 android:id="@+id/etOptionD"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvOptionD"
                 android:layout_alignLeft="@+id/etQuestion"
@@ -129,7 +129,7 @@
 
             <com.londroid.askmyfriends.activities.ContactsAutoCompleteTextView
                 android:id="@+id/atFriend1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvFriend1"
                 android:layout_alignLeft="@+id/etQuestion"
@@ -140,7 +140,7 @@
 
             <EditText
                 android:id="@+id/etFriend2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvFriend2"
                 android:layout_alignLeft="@+id/etQuestion"
@@ -149,7 +149,7 @@
 
             <EditText
                 android:id="@+id/etFriend3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tvFriend3"
                 android:layout_alignLeft="@+id/etQuestion"

@@ -7,7 +7,6 @@ public class ContactDto {
 	
 	private String contactName;
 
-	// Uri pointing to contact's thumbnail 
 	private Bitmap contactThumbnail;
 
 	private String phoneNumber;

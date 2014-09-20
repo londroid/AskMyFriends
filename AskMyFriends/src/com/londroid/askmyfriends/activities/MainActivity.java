@@ -1,10 +1,5 @@
 package com.londroid.askmyfriends.activities;
 
-import com.londroid.askmyfriends.R;
-import com.londroid.askmyfriends.R.id;
-import com.londroid.askmyfriends.R.layout;
-import com.londroid.askmyfriends.R.menu;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import com.londroid.askmyfriends.R;
 
 public class MainActivity extends ActionBarActivity {
 
