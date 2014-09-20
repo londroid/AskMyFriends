@@ -127,7 +127,7 @@
                 android:layout_alignLeft="@+id/etQuestion"
                 android:ems="8" />
 
-               <AutoCompleteTextView
+            <com.londroid.askmyfriends.activities.ContactsAutoCompleteTextView
                 android:id="@+id/atFriend1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

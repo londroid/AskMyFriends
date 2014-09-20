@@ -17,5 +17,6 @@
     <string name="send_question">Send Question</string>
     <string name="questionMark">\?</string>
     <string name="sample_text">Sample Text</string>
+    <string name="photo_desc">Contact Photo</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.londroid.askmyfriends.activities.helpers;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -9,8 +11,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.ContactsContract.Contacts;
 import android.telephony.SmsManager;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class SendSMSHelper {
 
@@ -43,6 +53,21 @@ public class SendSMSHelper {
 		this.preferences = activityContext.getSharedPreferences(QUESTION_RESULTS_PREFERENCE_KEY, Context.MODE_PRIVATE);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void sendSMS(SendSMSViewData smsActivityViewData) {
 
 		resetResults();
@@ -61,6 +86,7 @@ public class SendSMSHelper {
 
 			activityContext.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
 		}
+		
 	}
 	
 	private String composeMessage(String question, Map<String, String> options) {
@@ -96,9 +122,5 @@ public class SendSMSHelper {
 		editor.commit();
 	}
 	
-	
-	public SendSMSViewData getDataFromView(FutureTask<SendSMSViewData> data) throws InterruptedException, ExecutionException {
-		return data.get();
-	}
 	
 }
