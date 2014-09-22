@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="0.8.0a" >
 
-    <uses-sdk
+    <uses-sdk 
         android:minSdkVersion="13"
         android:targetSdkVersion="19" />
 
@@ -18,27 +18,41 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
+        
         <activity
-            android:name="com.londroid.askmyfriends.activities.MainActivity"
-            android:label="@string/title_activity_main">
+            android:name="com.londroid.askmyfriends.activities.SplashActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.londroid.askmyfriends.activities.SendSMS"
             android:label="@string/app_name"
             android:permission="android.permission.SEND_SMS" >
         </activity>
+        
+        <activity
+            android:name="com.londroid.askmyfriends.activities.MainActivity"
+            android:label="@string/app_name" />
+        
+<!--             android:theme="@style/splashScreenTheme"> -->
+<!--             <intent-filter> -->
+<!--                 <action android:name="android.intent.action.MAIN" /> -->
+<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
+<!--             </intent-filter> -->
+<!--         </activity> -->
 
         <receiver android:name=".SmsReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+        
     </application>
 
 </manifest>

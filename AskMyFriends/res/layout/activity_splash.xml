@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash"
+        android:layout_gravity="center_vertical"
+        android:onClick="goToMain"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="55dp"
+        android:text="AskMyFriends"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingRight="10dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginRight="55dp"
+        android:text="Survey your friends"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+    
+</FrameLayout>
