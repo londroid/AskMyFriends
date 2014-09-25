@@ -39,15 +39,8 @@
         <activity
             android:name="com.londroid.askmyfriends.activities.MainActivity"
             android:label="@string/app_name" />
-        
-<!--             android:theme="@style/splashScreenTheme"> -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="android.intent.action.MAIN" /> -->
-<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
-<!--             </intent-filter> -->
-<!--         </activity> -->
 
-        <receiver android:name=".SmsReceiver" >
+        <receiver android:name="com.londroid.askmyfriends.broadcastreceiver.SmsReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
