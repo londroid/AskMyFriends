@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void createNewQuestion(View view) {
-		Intent intent = new Intent(this, SendSMS.class);
+		Intent intent = new Intent(this, SendSMSActivity.class);
 		startActivity(intent);
 	}
 

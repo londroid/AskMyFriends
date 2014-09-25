@@ -23,9 +23,10 @@ import com.londroid.askmyfriends.activities.helpers.SendSMSHelper;
 import com.londroid.askmyfriends.activities.helpers.SendSMSViewData;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactInfoAdapter;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactLoader;
+import com.londroid.askmyfriends.utils.ContactsAutoCompleteTextView;
 
 
-public class SendSMS extends ActionBarActivity {
+public class SendSMSActivity extends ActionBarActivity {
 
 	private EditText mQuestion, mOptionA, mOptionB, mOptionC, mOptionD, mFriend2, mFriend3;
 	
@@ -48,7 +49,7 @@ public class SendSMS extends ActionBarActivity {
 		mFriend2 = (EditText) findViewById(R.id.etFriend2);
 		mFriend3 = (EditText) findViewById(R.id.etFriend3);
 		
-		sendSmsHelper = SendSMSHelper.setupAndGet(SendSMS.this);
+		sendSmsHelper = SendSMSHelper.setupAndGet(SendSMSActivity.this);
 		
 		setupContactView(mFriend1);
 	}

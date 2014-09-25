@@ -1,4 +1,4 @@
-package com.londroid.askmyfriends.util;
+package com.londroid.askmyfriends.utils;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

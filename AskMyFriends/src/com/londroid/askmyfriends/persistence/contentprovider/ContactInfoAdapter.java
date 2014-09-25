@@ -14,7 +14,7 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
 import com.londroid.askmyfriends.R;
-import com.londroid.askmyfriends.util.CommonUtils;
+import com.londroid.askmyfriends.utils.CommonUtils;
 
 
 public class ContactInfoAdapter extends ResourceCursorAdapter   {

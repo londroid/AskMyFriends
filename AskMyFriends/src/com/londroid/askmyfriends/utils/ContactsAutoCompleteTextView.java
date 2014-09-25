@@ -1,4 +1,4 @@
-package com.londroid.askmyfriends.activities;
+package com.londroid.askmyfriends.utils;
 
 import android.content.Context;
 import android.os.Bundle;

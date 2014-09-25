@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.londroid.askmyfriends.activities.SendSMS" >
+    tools:context="com.londroid.askmyfriends.activities.SendSMSActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                 android:layout_alignLeft="@+id/etQuestion"
                 android:ems="8" />
 
-            <com.londroid.askmyfriends.activities.ContactsAutoCompleteTextView
+            <com.londroid.askmyfriends.utils.ContactsAutoCompleteTextView
                 android:id="@+id/atFriend1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
