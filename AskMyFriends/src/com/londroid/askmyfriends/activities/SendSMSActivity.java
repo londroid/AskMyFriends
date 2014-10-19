@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.londroid.askmyfriends.R;
 import com.londroid.askmyfriends.activities.helpers.SendSMSHelper;
 import com.londroid.askmyfriends.activities.helpers.SendSMSViewData;
+import com.londroid.askmyfriends.facade.SurveyFacade;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactInfoAdapter;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactLoader;
 import com.londroid.askmyfriends.utils.ContactsAutoCompleteTextView;
