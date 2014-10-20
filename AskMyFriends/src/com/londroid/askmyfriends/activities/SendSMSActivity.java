@@ -17,11 +17,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.londroid.askmyfriends.R;
 import com.londroid.askmyfriends.activities.helpers.SendSMSHelper;
 import com.londroid.askmyfriends.activities.helpers.SendSMSViewData;
-import com.londroid.askmyfriends.facade.SurveyFacade;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactInfoAdapter;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactLoader;
 import com.londroid.askmyfriends.utils.ContactsAutoCompleteTextView;
@@ -106,7 +106,13 @@ public class SendSMSActivity extends ActionBarActivity {
 	
 	public void sendSMS(View view) {
 		SendSMSViewData viewData = collectDataFromViews();
-		sendSmsHelper.sendSMS(viewData);
+		try {
+			sendSmsHelper.sendSMS(viewData);
+			Toast.makeText(this, "Survey successfully saved / sent", Toast.LENGTH_SHORT);
+		} catch (Exception e) {
+			Toast.makeText(this, "Error saving / sending", Toast.LENGTH_SHORT);
+		}
+		
 		Log.d("AMF","Sending SMS...");
 	}
 	
@@ -117,20 +123,40 @@ public class SendSMSActivity extends ActionBarActivity {
 		List<String> phoneNumbers = new ArrayList<String>();
 		
 		//TODO: change to get number from contact data
-		phoneNumbers.add(mFriend1.getText().toString());
-		phoneNumbers.add(mFriend2.getText().toString()); 
-		phoneNumbers.add(mFriend3.getText().toString());
 		
-		Map<String, String> options = new LinkedHashMap<String, String>();
+		if (mFriend1.getText() != null) {
+			phoneNumbers.add(mFriend1.getText().toString().trim());
+		}
 		
-		options.put("A", mOptionA.getText().toString());
-		options.put("B", mOptionB.getText().toString());
-		options.put("C", mOptionC.getText().toString());
-		options.put("D", mOptionD.getText().toString());		
+		if (mFriend2.getText() != null) {
+			phoneNumbers.add(mFriend2.getText().toString().trim());
+		}
 		
-		String question = mQuestion.getText().toString();
+		if (mFriend3.getText() != null) {
+			phoneNumbers.add(mFriend3.getText().toString().trim());
+		}
 		
-		viewData.setOptions(options);
+		Map<String, String> answers = new LinkedHashMap<String, String>();
+		
+		if (mOptionA.getText() != null) {
+			answers.put("A", mOptionA.getText().toString());
+		}
+		
+		if (mOptionB.getText() != null) {
+			answers.put("B", mOptionB.getText().toString());
+		}
+		
+		if (mOptionC.getText() != null) {
+			answers.put("C", mOptionC.getText().toString());
+		}
+		
+		if (mOptionD.getText() != null) {
+			answers.put("D", mOptionD.getText().toString());
+		}
+		
+		String question = mQuestion.getText() != null ? mQuestion.getText().toString() : null;
+		
+		viewData.setAnswers(answers);
 		viewData.setQuestion(question);
 		viewData.setPhoneNumbers(phoneNumbers);
 

@@ -13,6 +13,7 @@ import com.londroid.askmyfriends.persistence.greendao.dao.SurveyDao;
 public class Answer {
 
     private Long id;
+    private String listingTag;
     private String text;
     private Integer order;
     private long surveyId;
@@ -34,8 +35,9 @@ public class Answer {
         this.id = id;
     }
 
-    public Answer(Long id, String text, Integer order, long surveyId) {
+    public Answer(Long id, String listingTag, String text, Integer order, long surveyId) {
         this.id = id;
+        this.listingTag = listingTag;
         this.text = text;
         this.order = order;
         this.surveyId = surveyId;
@@ -53,6 +55,14 @@ public class Answer {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getListingTag() {
+        return listingTag;
+    }
+
+    public void setListingTag(String listingTag) {
+        this.listingTag = listingTag;
     }
 
     public String getText() {

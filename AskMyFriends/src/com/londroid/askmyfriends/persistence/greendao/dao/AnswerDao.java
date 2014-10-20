@@ -31,9 +31,10 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Text = new Property(1, String.class, "text", false, "TEXT");
-        public final static Property Order = new Property(2, Integer.class, "order", false, "ORDER");
-        public final static Property SurveyId = new Property(3, long.class, "surveyId", false, "SURVEY_ID");
+        public final static Property ListingTag = new Property(1, String.class, "listingTag", false, "LISTING_TAG");
+        public final static Property Text = new Property(2, String.class, "text", false, "TEXT");
+        public final static Property Order = new Property(3, Integer.class, "order", false, "ORDER");
+        public final static Property SurveyId = new Property(4, long.class, "surveyId", false, "SURVEY_ID");
     };
 
     private DaoSession daoSession;
@@ -54,9 +55,10 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'ANSWER' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'TEXT' TEXT," + // 1: text
-                "'ORDER' INTEGER," + // 2: order
-                "'SURVEY_ID' INTEGER NOT NULL );"); // 3: surveyId
+                "'LISTING_TAG' TEXT," + // 1: listingTag
+                "'TEXT' TEXT," + // 2: text
+                "'ORDER' INTEGER," + // 3: order
+                "'SURVEY_ID' INTEGER NOT NULL );"); // 4: surveyId
     }
 
     /** Drops the underlying database table. */
@@ -75,16 +77,21 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
             stmt.bindLong(1, id);
         }
  
+        String listingTag = entity.getListingTag();
+        if (listingTag != null) {
+            stmt.bindString(2, listingTag);
+        }
+ 
         String text = entity.getText();
         if (text != null) {
-            stmt.bindString(2, text);
+            stmt.bindString(3, text);
         }
  
         Integer order = entity.getOrder();
         if (order != null) {
-            stmt.bindLong(3, order);
+            stmt.bindLong(4, order);
         }
-        stmt.bindLong(4, entity.getSurveyId());
+        stmt.bindLong(5, entity.getSurveyId());
     }
 
     @Override
@@ -104,9 +111,10 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
     public Answer readEntity(Cursor cursor, int offset) {
         Answer entity = new Answer( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // text
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // order
-            cursor.getLong(offset + 3) // surveyId
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // listingTag
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // text
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // order
+            cursor.getLong(offset + 4) // surveyId
         );
         return entity;
     }
@@ -115,9 +123,10 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
     @Override
     public void readEntity(Cursor cursor, Answer entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setText(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setOrder(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setSurveyId(cursor.getLong(offset + 3));
+        entity.setListingTag(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setText(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setOrder(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setSurveyId(cursor.getLong(offset + 4));
      }
     
     /** @inheritdoc */

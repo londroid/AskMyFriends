@@ -1,6 +1,7 @@
 package com.londroid.askmyfriends.activities.helpers;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import android.content.ContentValues;
@@ -13,7 +14,11 @@ import android.util.Log;
 
 import com.londroid.askmyfriends.facade.SurveyFacade;
 import com.londroid.askmyfriends.facade.SurveyFacadeImpl;
+import com.londroid.askmyfriends.viewobjects.AnswerDto;
+import com.londroid.askmyfriends.viewobjects.JurorDto;
+import com.londroid.askmyfriends.viewobjects.QuestionDto;
 import com.londroid.askmyfriends.viewobjects.SurveyDto;
+import com.londroid.askmyfriends.viewobjects.SurveyType;
 
 public class SendSMSHelper {
 
@@ -54,33 +59,61 @@ public class SendSMSHelper {
 
 		try {
 			resetResults();
-			String message = composeMessage(smsActivityViewData.getQuestion(), smsActivityViewData.getOptions());
-			
-			SmsManager smsManager = SmsManager.getDefault();
-
-			for (String phoneNumber : smsActivityViewData.getPhoneNumbers()) {
-				
-				ArrayList<String> parts = smsManager.divideMessage(message);
-				smsManager.sendMultipartTextMessage(phoneNumber, null, parts, null, null);
-				
-				ContentValues values = new ContentValues();
-				values.put("address", phoneNumber);
-				values.put("body", message);
-
-				activityContext.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-			}
+//			String message = composeMessage(smsActivityViewData.getQuestion(), smsActivityViewData.getOptions());
+//			
+//			SmsManager smsManager = SmsManager.getDefault();
+//
+//			for (String phoneNumber : smsActivityViewData.getPhoneNumbers()) {
+//				
+//				ArrayList<String> parts = smsManager.divideMessage(message);
+//				smsManager.sendMultipartTextMessage(phoneNumber, null, parts, null, null);
+//				
+//				ContentValues values = new ContentValues();
+//				values.put("address", phoneNumber);
+//				values.put("body", message);
+//
+//				activityContext.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+//			}
 		} catch (Throwable t) {
 			Log.e("AMF", "Error sending SMS");
 		} finally {
+			
 			saveSurvey(smsActivityViewData);
 		}
 	}
 	
 	private void saveSurvey(SendSMSViewData sendSMSViewData) {
-		//TODO: Adapt read data to SurveyView(Dto)
 		//TODO: Save as well a flag saying if the SMS was successfully sent or not
-		SurveyDto surveyView = new SurveyDto();
-		surveyFacade.saveSurvey(surveyView);
+		SurveyDto surveyDto = new SurveyDto();
+		
+		surveyDto.setSurveyType(SurveyType.SINGLE_ANSWER);
+		QuestionDto questionDto = new QuestionDto();
+		questionDto.setText(sendSMSViewData.getQuestion());
+		surveyDto.setQuestion(questionDto);
+		surveyDto.setTitle("Ask My Friends Survey 1");
+		
+		List<AnswerDto> answers = new ArrayList<AnswerDto>();
+		Map<String, String> answersMap = sendSMSViewData.getOptions();
+		for (String answerTag : answersMap.keySet()) {
+			AnswerDto answerDto = new AnswerDto();
+			answerDto.setText(answersMap.get(answerTag));
+			answerDto.setListingTag(answerTag);
+			answers.add(answerDto);
+		}
+		
+		List<JurorDto> jurors = new ArrayList<JurorDto>();
+		for (String phoneNumber : sendSMSViewData.getPhoneNumbers()) {
+			JurorDto jurorDto = new JurorDto();
+			jurorDto.setName("Unknown");
+			jurorDto.setPhoneNumber(phoneNumber);
+			jurors.add(jurorDto);
+		}
+	
+		surveyDto.setAnswers(answers);
+		surveyDto.setJurors(jurors);
+		Log.i("AMF", "About to persist survey");
+		surveyFacade.saveSurvey(surveyDto);
+		Log.i("AMF", "Survey successfully persisted");
 	}
  	
 	private String composeMessage(String question, Map<String, String> options) {
@@ -116,8 +149,6 @@ public class SendSMSHelper {
 		editor.commit();
 	}
 	
-	private void saveSurvey() {
-		
-	}
+
 	
 }

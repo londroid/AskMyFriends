@@ -7,7 +7,7 @@ public class SendSMSViewData {
 
 	private String question;
 	private List<String> phoneNumbers;
-	private Map<String, String> options;
+	private Map<String, String> answers;
 	
 	public String getQuestion() {
 		return question;
@@ -26,10 +26,10 @@ public class SendSMSViewData {
 	}
 	
 	public Map<String, String> getOptions() {
-		return options;
+		return answers;
 	}
 	
-	public void setOptions(Map<String, String> options) {
-		this.options = options;
+	public void setAnswers(Map<String, String> options) {
+		this.answers = options;
 	}
 }

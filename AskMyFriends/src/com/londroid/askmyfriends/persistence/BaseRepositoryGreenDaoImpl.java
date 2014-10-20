@@ -25,18 +25,16 @@ public class BaseRepositoryGreenDaoImpl<E, K> implements MainRepository<E, K> {
 	private AbstractDao<E, K> dao;
 	
 	@SuppressWarnings("unchecked")
-	public BaseRepositoryGreenDaoImpl(DaoSession daoSession) {
+	public BaseRepositoryGreenDaoImpl(DaoSession daoSession, Class<E> entityClass) {
 		this.daoSession = daoSession;
-		this.entityClass = (Class<E>) ((ParameterizedType) getClass().
-                getGenericSuperclass()).getActualTypeArguments()[0];
-		
+		this.entityClass = entityClass;
 		this.dao = (AbstractDao<E,K>)daoSession.getDao(entityClass);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void save(E entity) {
-		dao.insertInTx(entity);
+		dao.insert(entity);
 	}
 
 	@Override
@@ -52,7 +50,7 @@ public class BaseRepositoryGreenDaoImpl<E, K> implements MainRepository<E, K> {
 	
 	@SuppressWarnings("unchecked")
 	public void update(E entity) {
-		dao.updateInTx(entity);
+		dao.update(entity);
 	}
 	
 	@Override

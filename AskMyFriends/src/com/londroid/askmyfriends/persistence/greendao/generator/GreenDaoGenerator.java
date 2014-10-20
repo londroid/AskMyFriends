@@ -35,6 +35,7 @@ public class GreenDaoGenerator {
         question.addStringProperty("text");
         
         answer.addIdProperty();
+        answer.addStringProperty("listingTag");
         answer.addStringProperty("text");
         answer.addIntProperty("order");
         Property surveyId = answer.addLongProperty("surveyId").notNull().getProperty();
@@ -51,7 +52,7 @@ public class GreenDaoGenerator {
         vote.addIdProperty();
         Property answerId = vote.addLongProperty("answerId").notNull().getProperty();
         Property jurorId = vote.addLongProperty("jurorId").notNull().getProperty();
-        Property commentId = vote.addLongProperty("commentId").notNull().getProperty();
+        Property commentId = vote.addLongProperty("commentId").getProperty();
         vote.addToOne(answer, answerId);
         vote.addToOne(juror, jurorId);
         vote.addToOne(comment, commentId);

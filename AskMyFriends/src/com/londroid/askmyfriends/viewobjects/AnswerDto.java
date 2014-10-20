@@ -5,6 +5,7 @@ public class AnswerDto {
 	private Long id;
 	private String text;
 	private Integer order;
+	private String listingTag;
 	
 	public Long getId() {
 		return id;
@@ -24,5 +25,10 @@ public class AnswerDto {
 	public void setOrder(Integer order) {
 		this.order = order;
 	}
-	
+	public String getListingTag() {
+		return listingTag;
+	}
+	public void setListingTag(String listingTag) {
+		this.listingTag = listingTag;
+	}
 }

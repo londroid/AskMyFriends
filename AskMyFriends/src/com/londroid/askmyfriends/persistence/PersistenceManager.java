@@ -5,9 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.londroid.askmyfriends.persistence.greendao.dao.DaoMaster;
 import com.londroid.askmyfriends.persistence.greendao.dao.DaoSession;
-import com.londroid.askmyfriends.persistence.greendao.domain.Answer;
-import com.londroid.askmyfriends.persistence.greendao.domain.Question;
-import com.londroid.askmyfriends.persistence.greendao.domain.Survey;
 
 public class PersistenceManager {
 
@@ -30,16 +27,8 @@ public class PersistenceManager {
 	}
 	
 	//TODO: should be singleton!!!
-	public BaseRepositoryGreenDaoImpl<Answer, Long> getAnswerRepository() {
-		return new BaseRepositoryGreenDaoImpl<Answer, Long>(daoSession);
-	}
-	
-	public BaseRepositoryGreenDaoImpl<Question, Long> getQuestionRepository() {
-		return new BaseRepositoryGreenDaoImpl<Question, Long>(daoSession);
-	}
-	
-	public BaseRepositoryGreenDaoImpl<Survey, Long> getSurveyRepository() {
-		return new BaseRepositoryGreenDaoImpl<Survey, Long>(daoSession);
+	public <E, K> BaseRepositoryGreenDaoImpl<E, K> getRepository(Class<E> entityClass) {
+		return new BaseRepositoryGreenDaoImpl<E, K>(daoSession, entityClass);
 	}
 	
 	public static PersistenceManager get() {

@@ -10,7 +10,14 @@ public class SurveyDto {
 	private QuestionDto question;
 	private List<AnswerDto> answers;
 	private SurveyType surveyType;
+	private List<JurorDto> jurors;
 	
+	public List<JurorDto> getJurors() {
+		return jurors;
+	}
+	public void setJurors(List<JurorDto> jurors) {
+		this.jurors = jurors;
+	}
 	public QuestionDto getQuestion() {
 		return question;
 	}
