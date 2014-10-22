@@ -1,24 +1,16 @@
 package com.londroid.askmyfriends.activities.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.net.Uri;
-import android.telephony.SmsManager;
 import android.util.Log;
 
 import com.londroid.askmyfriends.facade.SurveyFacade;
 import com.londroid.askmyfriends.facade.SurveyFacadeImpl;
-import com.londroid.askmyfriends.viewobjects.AnswerDto;
-import com.londroid.askmyfriends.viewobjects.JurorDto;
-import com.londroid.askmyfriends.viewobjects.QuestionDto;
+import com.londroid.askmyfriends.persistence.greendao.domain.Survey;
 import com.londroid.askmyfriends.viewobjects.SurveyDto;
-import com.londroid.askmyfriends.viewobjects.SurveyType;
 
 public class SendSMSHelper {
 
@@ -55,7 +47,7 @@ public class SendSMSHelper {
 		this.preferences = activityContext.getSharedPreferences(QUESTION_RESULTS_PREFERENCE_KEY, Context.MODE_PRIVATE);
 	}
 	
-	public void sendSMS(SendSMSViewData smsActivityViewData) {
+	public void sendSMS(SurveyDto surveyDto) {
 
 		try {
 			resetResults();
@@ -78,40 +70,20 @@ public class SendSMSHelper {
 			Log.e("AMF", "Error sending SMS");
 		} finally {
 			
-			saveSurvey(smsActivityViewData);
+			sendSurvey(surveyDto);
 		}
 	}
 	
-	private void saveSurvey(SendSMSViewData sendSMSViewData) {
-		//TODO: Save as well a flag saying if the SMS was successfully sent or not
-		SurveyDto surveyDto = new SurveyDto();
-		
-		surveyDto.setSurveyType(SurveyType.SINGLE_ANSWER);
-		QuestionDto questionDto = new QuestionDto();
-		questionDto.setText(sendSMSViewData.getQuestion());
-		surveyDto.setQuestion(questionDto);
-		surveyDto.setTitle("Ask My Friends Survey 1");
-		
-		List<AnswerDto> answers = new ArrayList<AnswerDto>();
-		Map<String, String> answersMap = sendSMSViewData.getOptions();
-		for (String answerTag : answersMap.keySet()) {
-			AnswerDto answerDto = new AnswerDto();
-			answerDto.setText(answersMap.get(answerTag));
-			answerDto.setListingTag(answerTag);
-			answers.add(answerDto);
-		}
-		
-		List<JurorDto> jurors = new ArrayList<JurorDto>();
-		for (String phoneNumber : sendSMSViewData.getPhoneNumbers()) {
-			JurorDto jurorDto = new JurorDto();
-			jurorDto.setName("Unknown");
-			jurorDto.setPhoneNumber(phoneNumber);
-			jurors.add(jurorDto);
-		}
 	
-		surveyDto.setAnswers(answers);
-		surveyDto.setJurors(jurors);
+	//TODO: Validator
+	public boolean validateSurvey(SurveyDto surveyDto) {
+		return true;
+	}
+	
+	private void sendSurvey(SurveyDto surveyDto) {
+		//TODO: Save as well a flag saying if the SMS was successfully sent or not
 		Log.i("AMF", "About to persist survey");
+		validateSurvey(surveyDto);
 		surveyFacade.saveSurvey(surveyDto);
 		Log.i("AMF", "Survey successfully persisted");
 	}
@@ -149,6 +121,14 @@ public class SendSMSHelper {
 		editor.commit();
 	}
 	
-
 	
+	public SurveyDto getSurvey(Long surveyId) {
+	
+		Survey survey = surveyFacade.findSurvey(surveyId);
+		
+		//TODO: Map entities here
+		SurveyDto surveyDto = new SurveyDto();
+		
+		return surveyDto;
+	}
 }

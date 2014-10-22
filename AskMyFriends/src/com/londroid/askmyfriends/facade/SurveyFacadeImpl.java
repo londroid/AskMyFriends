@@ -195,4 +195,25 @@ public class SurveyFacadeImpl implements SurveyFacade {
 		return answer;
 	}
 
+	/**
+	 * Retrieve the given survey from DB and convert it to Dto to
+	 * give it back to the UI
+	 * 
+	 */
+	@Override
+	public Survey findSurvey(Long surveyId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Sends the given survey backing it up in DB
+	 * 
+	 */
+	@Override
+	public void sendSurvey(Survey survey) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

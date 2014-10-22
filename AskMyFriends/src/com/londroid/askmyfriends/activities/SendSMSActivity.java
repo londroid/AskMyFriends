@@ -25,6 +25,11 @@ import com.londroid.askmyfriends.activities.helpers.SendSMSViewData;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactInfoAdapter;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactLoader;
 import com.londroid.askmyfriends.utils.ContactsAutoCompleteTextView;
+import com.londroid.askmyfriends.viewobjects.AnswerDto;
+import com.londroid.askmyfriends.viewobjects.JurorDto;
+import com.londroid.askmyfriends.viewobjects.QuestionDto;
+import com.londroid.askmyfriends.viewobjects.SurveyDto;
+import com.londroid.askmyfriends.viewobjects.SurveyType;
 
 
 public class SendSMSActivity extends ActionBarActivity {
@@ -34,11 +39,20 @@ public class SendSMSActivity extends ActionBarActivity {
 	private ContactsAutoCompleteTextView mFriend1;
 	
 	private SendSMSHelper sendSmsHelper;
+	
+	public static final String EXTRA_SURVEY_ID_KEY = "surveyId";
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+	public static final String EXTRA_ACTION_KEY = "action";
+	
+	private SurveyDto selectedSurvey;
+	
+	public void initData() {
+		// Get the helper (controller) to manage actions
+		sendSmsHelper = SendSMSHelper.setupAndGet(SendSMSActivity.this);
+	}
+	
+	public void setupViews() {
+		// Setup views
 		setContentView(R.layout.activity_send_sms);
 
 		mQuestion = (EditText) findViewById(R.id.etQuestion);
@@ -49,13 +63,41 @@ public class SendSMSActivity extends ActionBarActivity {
 		mFriend1 = (ContactsAutoCompleteTextView) findViewById(R.id.atFriend1);
 		mFriend2 = (EditText) findViewById(R.id.etFriend2);
 		mFriend3 = (EditText) findViewById(R.id.etFriend3);
-		
-		sendSmsHelper = SendSMSHelper.setupAndGet(SendSMSActivity.this);
-		
 		setupContactView(mFriend1);
+	
 	}
 	
+	public void initActivityAccordingToIntent() {
+		
+		Bundle bundle = getIntent().getExtras();
+		
+		if (bundle != null) {
+			
+			ActionType actionType = (ActionType)bundle.get(EXTRA_ACTION_KEY);
+			
+			if (actionType != null) {
+				
+				if (actionType == ActionType.EDIT_SURVEY) {
+					
+					Long surveyId = bundle.getLong(EXTRA_ACTION_KEY);
+					selectedSurvey = sendSmsHelper.getSurvey(surveyId);
+					fillUiWithSurvey();
+				}
+			}
+		}
+
+		fillUiWithDefaults();
+	}
 	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		setupViews();
+		initData();
+		
+	}
+		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -77,7 +119,8 @@ public class SendSMSActivity extends ActionBarActivity {
 	}
 	
 	/**
-	 * Setup of contact info adapter using Cursor loader and custom autocomplete view ----
+	 * Setup of contact info adapter using Cursor loader and custom autocomplete view for this activity
+	 * 
 	 */
 	private void setupContactView(final ContactsAutoCompleteTextView contactsView) {
 		
@@ -104,62 +147,126 @@ public class SendSMSActivity extends ActionBarActivity {
 		Log.w("AMF","Contacts view setup completed.");
 	}
 	
+	/**
+	 * This is the action performed when tapping the Send button in the UI
+	 * 
+	 * @param view
+	 */
 	public void sendSMS(View view) {
-		SendSMSViewData viewData = collectDataFromViews();
+		SurveyDto surveyDto = collectSurveyDataFromUi();
 		try {
-			sendSmsHelper.sendSMS(viewData);
-			Toast.makeText(this, "Survey successfully saved / sent", Toast.LENGTH_SHORT);
+			sendSmsHelper.sendSMS(surveyDto);
+			Toast.makeText(this, "Survey successfully sent", Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
-			Toast.makeText(this, "Error saving / sending", Toast.LENGTH_SHORT);
+			Toast.makeText(this, "Error sending survey", Toast.LENGTH_SHORT).show();
 		}
-		
-		Log.d("AMF","Sending SMS...");
 	}
 	
-	private SendSMSViewData collectDataFromViews() {
+	private String getTextFromEditText(EditText editText) {
+		if (editText.getText() != null) {
+			String text = editText.getText().toString().trim();
+			if (!"".equals(text)) {
+				return text;
+			}	
+			return null;
+		}
+		return null;
+	}
+	
+	private SurveyDto collectSurveyDataFromUi() {
 		
-		SendSMSViewData viewData = new SendSMSViewData();
+		SurveyDto surveyDto = new SurveyDto();
+		surveyDto.setTitle("Title Of Survey");
+		surveyDto.setSurveyType(SurveyType.SINGLE_ANSWER);
+		String question = mQuestion.getText() != null ? mQuestion.getText().toString() : null;
+		QuestionDto questionDto = new QuestionDto();
+		questionDto.setText(question);
 		
-		List<String> phoneNumbers = new ArrayList<String>();
+		//TODO: change Editables to get number from contact data
+		List<JurorDto> jurorDtos = new ArrayList<JurorDto>();
 		
-		//TODO: change to get number from contact data
+		String phoneNumber1 = getTextFromEditText(mFriend1);
+		String phoneNumber2 = getTextFromEditText(mFriend2);
+		String phoneNumber3 = getTextFromEditText(mFriend3);
 		
-		if (mFriend1.getText() != null) {
-			phoneNumbers.add(mFriend1.getText().toString().trim());
+		//TODO: Validate jurors
+		JurorDto jurorDto = new JurorDto();
+		
+		if (phoneNumber1 != null) {
+			jurorDto = new JurorDto();
+			jurorDto.setName(phoneNumber1);
+			jurorDtos.add(jurorDto);
 		}
 		
-		if (mFriend2.getText() != null) {
-			phoneNumbers.add(mFriend2.getText().toString().trim());
+		if (phoneNumber2 != null) {
+			jurorDto = new JurorDto();
+			jurorDto.setName(phoneNumber2);
+			jurorDtos.add(jurorDto);
 		}
 		
-		if (mFriend3.getText() != null) {
-			phoneNumbers.add(mFriend3.getText().toString().trim());
+		if (phoneNumber3 != null) {
+			jurorDto = new JurorDto();
+			jurorDto.setName(phoneNumber3);
+			jurorDtos.add(jurorDto);
 		}
+		
+		// Collect answers
+		List<AnswerDto> answerDtos = new ArrayList<AnswerDto>();
 		
 		Map<String, String> answers = new LinkedHashMap<String, String>();
 		
-		if (mOptionA.getText() != null) {
-			answers.put("A", mOptionA.getText().toString());
+		String optionA = getTextFromEditText(mOptionA);
+		String optionB = getTextFromEditText(mOptionB);
+		String optionC = getTextFromEditText(mOptionC);
+		String optionD = getTextFromEditText(mOptionD);
+		
+		AnswerDto answerDto;
+		
+		if (optionA != null) {
+			answerDto = new AnswerDto();
+			answerDto.setListingTag("A");
+			answerDto.setOrder(0);
+			answerDto.setText(optionA);
+			answerDtos.add(answerDto);
 		}
 		
-		if (mOptionB.getText() != null) {
-			answers.put("B", mOptionB.getText().toString());
+		if (optionB != null) {
+			answerDto = new AnswerDto();
+			answerDto.setListingTag("B");
+			answerDto.setOrder(1);
+			answerDto.setText(optionB);
+			answerDtos.add(answerDto);
 		}
 		
-		if (mOptionC.getText() != null) {
-			answers.put("C", mOptionC.getText().toString());
+		if (optionC != null) {
+			answerDto = new AnswerDto();
+			answerDto.setListingTag("C");
+			answerDto.setOrder(2);
+			answerDto.setText(optionC);
+			answerDtos.add(answerDto);
 		}
 		
-		if (mOptionD.getText() != null) {
-			answers.put("D", mOptionD.getText().toString());
+		if (optionD != null) {
+			answerDto = new AnswerDto();
+			answerDto.setListingTag("D");
+			answerDto.setOrder(3);
+			answerDto.setText(optionD);
+			answerDtos.add(answerDto);
 		}
+				
+		surveyDto.setJurors(jurorDtos);
+		surveyDto.setAnswers(answerDtos);
 		
-		String question = mQuestion.getText() != null ? mQuestion.getText().toString() : null;
-		
-		viewData.setAnswers(answers);
-		viewData.setQuestion(question);
-		viewData.setPhoneNumbers(phoneNumbers);
+		return surveyDto;
+	}
 
-		return viewData;
+	private void fillUiWithSurvey() {
+		if (selectedSurvey != null) {
+			//TODO: take selected object and fill UI with it
+		}
+	}
+	
+	private void fillUiWithDefaults() {
+		//TODO: reset or put default data in the UI
 	}
 }
