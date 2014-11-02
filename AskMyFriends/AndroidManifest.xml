@@ -40,7 +40,7 @@
             android:name="com.londroid.askmyfriends.activities.MainActivity"
             android:label="@string/app_name" />
 
-        <receiver android:name="com.londroid.askmyfriends.broadcastreceiver.SmsReceiver" >
+        <receiver android:name="com.londroid.askmyfriends.sms.SmsReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>

@@ -1,17 +1,31 @@
 package com.londroid.askmyfriends.viewobjects;
 
+import java.util.Date;
 import java.util.List;
 
 public class SurveyDto {
 
 	private Long id;
-	
 	private String title;
 	private QuestionDto question;
 	private List<AnswerDto> answers;
 	private SurveyType surveyType;
 	private List<JurorDto> jurors;
+	private Date creationDate;
+	private Date modificationDate;
 	
+	public Date getCreationDate() {
+		return creationDate;
+	}
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+	public void setModificationDate(Date modificationDate) {
+		this.modificationDate = modificationDate;
+	}
 	public List<JurorDto> getJurors() {
 		return jurors;
 	}

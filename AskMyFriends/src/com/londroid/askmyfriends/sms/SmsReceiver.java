@@ -1,4 +1,4 @@
-package com.londroid.askmyfriends.broadcastreceiver;
+package com.londroid.askmyfriends.sms;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,17 +1,17 @@
 package com.londroid.askmyfriends.activities;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.londroid.askmyfriends.R;
 import com.londroid.askmyfriends.activities.helpers.SendSMSHelper;
-import com.londroid.askmyfriends.activities.helpers.SendSMSViewData;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactInfoAdapter;
 import com.londroid.askmyfriends.persistence.contentprovider.ContactLoader;
 import com.londroid.askmyfriends.utils.ContactsAutoCompleteTextView;
@@ -154,13 +153,29 @@ public class SendSMSActivity extends ActionBarActivity {
 	 */
 	public void sendSMS(View view) {
 		SurveyDto surveyDto = collectSurveyDataFromUi();
+		
 		try {
+			hideKeyboard();
+			long startTime = System.currentTimeMillis();
 			sendSmsHelper.sendSMS(surveyDto);
+			long endTime = System.currentTimeMillis();
+			Log.i("AMF", "Sending and persisting survey took " + (endTime - startTime) + " ms");
 			Toast.makeText(this, "Survey successfully sent", Toast.LENGTH_SHORT).show();
-		} catch (Exception e) {
+		} catch (Throwable t) {
+			Log.e("AMF", "Error sending survey", t);
 			Toast.makeText(this, "Error sending survey", Toast.LENGTH_SHORT).show();
 		}
 	}
+	
+	 /**
+     * Hide the keyboard after a user has finished typing the url.
+     */
+    private void hideKeyboard() {
+        InputMethodManager mgr =
+            (InputMethodManager) getSystemService
+            (Context.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(mFriend1.getWindowToken(),0);
+    }
 	
 	private String getTextFromEditText(EditText editText) {
 		if (editText.getText() != null) {
@@ -194,26 +209,27 @@ public class SendSMSActivity extends ActionBarActivity {
 		
 		if (phoneNumber1 != null) {
 			jurorDto = new JurorDto();
-			jurorDto.setName(phoneNumber1);
+			jurorDto.setName("Unknown");
+			jurorDto.setPhoneNumber(phoneNumber1);
 			jurorDtos.add(jurorDto);
 		}
 		
 		if (phoneNumber2 != null) {
 			jurorDto = new JurorDto();
-			jurorDto.setName(phoneNumber2);
+			jurorDto.setName("Unknown");
+			jurorDto.setPhoneNumber(phoneNumber2);
 			jurorDtos.add(jurorDto);
 		}
 		
 		if (phoneNumber3 != null) {
 			jurorDto = new JurorDto();
-			jurorDto.setName(phoneNumber3);
+			jurorDto.setName("Unknown");
+			jurorDto.setPhoneNumber(phoneNumber3);
 			jurorDtos.add(jurorDto);
 		}
 		
 		// Collect answers
 		List<AnswerDto> answerDtos = new ArrayList<AnswerDto>();
-		
-		Map<String, String> answers = new LinkedHashMap<String, String>();
 		
 		String optionA = getTextFromEditText(mOptionA);
 		String optionB = getTextFromEditText(mOptionB);
@@ -256,6 +272,7 @@ public class SendSMSActivity extends ActionBarActivity {
 				
 		surveyDto.setJurors(jurorDtos);
 		surveyDto.setAnswers(answerDtos);
+		surveyDto.setQuestion(questionDto);
 		
 		return surveyDto;
 	}
