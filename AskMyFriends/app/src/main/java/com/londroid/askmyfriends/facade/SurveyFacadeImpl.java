@@ -216,9 +216,21 @@ public class SurveyFacadeImpl implements SurveyFacade {
 		message +="\n Answer with: AMF#" + surveyId + "#ANSWERTAG"; 
 		return message;
 	}
-	
+	// For testing!
+    private void saveOwnerIfNotAlready(final Owner owner) {
+        ownerRepository.getSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("AMF", "Starting transaction to persist testing Owner...");
+                ownerRepository.getDao().insertOrReplace(owner);
+            }
+        });
+    }
+
 	private void saveCompleteSurvey(final Survey survey, final Question question, final List<Juror> jurors, final List<Answer> answers) {
-		
+
+        saveOwnerIfNotAlready(new Owner(null, "David", "07547898142"));
+
 		surveyRepository.getSession().runInTx(new Runnable() {
 			@Override
 			public void run() {
