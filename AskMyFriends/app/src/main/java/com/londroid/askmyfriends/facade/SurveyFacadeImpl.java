@@ -13,6 +13,8 @@ import android.os.Message;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import com.londroid.askmyfriends.activities.SendSMSActivity;
+import com.londroid.askmyfriends.activities.handlers.SmsSendingResultHandler;
 import com.londroid.askmyfriends.persistence.BaseRepositoryGreenDaoImpl;
 import com.londroid.askmyfriends.persistence.PersistenceManager;
 import com.londroid.askmyfriends.persistence.greendao.dao.JurorSurveyDao.Properties;
@@ -80,27 +82,10 @@ public class SurveyFacadeImpl implements SurveyFacade {
 			return null;
 		}
 	}
-	
-	public Survey saveOrUpdateSurvey(Survey survey) {
-		surveyRepository.getDao().insertOrReplace(survey);
-		return survey;
-	}
-	
-	private void saveOrUpdateQuestion(Question question) {
-		questionRepository.getDao().insertOrReplace(question);
-	}
-	
-	private void saveOrUpdateAnswer(Answer answer) {
-		answerRepository.getDao().insertOrReplace(answer);
-	}
-	
-	private void saveOrUpdateJuror(Juror juror) {
-		jurorRepository.getDao().insertOrReplace(juror);
-	}
-	
-	private void saveOrUpdateJurorSurvey(JurorSurvey jurorSurvey) {
-		jurorSurveyRepository.getDao().insertOrReplace(jurorSurvey);
-	}
+
+    public List<Survey> findAllSurveys() {
+        return surveyRepository.getAll();
+    }
 
 	/**
 	 * Return the given survey
@@ -131,11 +116,12 @@ public class SurveyFacadeImpl implements SurveyFacade {
 		//TODO: Do this in a background service (For example, IntentService) -- right now NO SMS SENT at all!!
 		//handleSmsSendingsInSeparateThread(survey.getId(), question.getText(), jurors, answers);
 	}
-	
-	private void handleSmsSendingsInSeparateThread(final Long surveyId, final String questionText, final List<Juror> jurors, final List<Answer> answers) {
+
+    //TODO: It might need to use a Service, as this could be really long and the user might switch to another app
+	private void handleSmsSendingsInSeparateThread(SendSMSActivity activity, final Long surveyId, final String questionText, final List<Juror> jurors, final List<Answer> answers) {
 		
 		// Handler to communicate with UI Thread
-		final Handler handler = new Handler();
+		final SmsSendingResultHandler smsHandler = new SmsSendingResultHandler(activity);
 		executor.execute(new Runnable() {
 	
 			@Override
@@ -143,20 +129,22 @@ public class SurveyFacadeImpl implements SurveyFacade {
 				
 				List<String> failedSendings = sendSurveyViaSmsWithRetry(surveyId, questionText, jurors, answers);
 				
-				Message msg = handler.obtainMessage();
+				Message msg;
 				
 				//TODO: store information in the survey indicating that some jurors didn't receive it
 				//TODO: update the UI thread with Toasts indicating the status of the survey sent
 				if (failedSendings.size() == 0) {
 					// Mark the survey as successfully sent -- SUCCESSFULLY_SENT
-					
-				} else if (failedSendings.size() == jurors.size()) { 
+					msg = smsHandler.obtainMessage(SmsSendingResultHandler.SHOW_SUCCESSFUL);
+
+				} else if (failedSendings.size() == jurors.size()) {
 					// The entire survey was failed to send -- show warning -- SENT_FAILED
+                    msg = smsHandler.obtainMessage(SmsSendingResultHandler.SHOW_FAILED);
 				} else {
-					// Some sendings were successful, mark as PARTIALLY_SENT 
+					// Some sendings were successful, mark as PARTIALLY_SENT
+                    msg = smsHandler.obtainMessage(SmsSendingResultHandler.SHOW_PARTIALLY_SUCCESSFUL);
 				}
-				
-				handler.sendMessage(msg);
+				smsHandler.sendMessage(msg);
 			}
 		});
 	}
@@ -173,7 +161,8 @@ public class SurveyFacadeImpl implements SurveyFacade {
 		// List of phone numbers for which the SMS could not be sent
 		List<String> failedSendings = new ArrayList<String>();  
 		SmsManager smsManager = SmsManager.getDefault();
-			
+        ArrayList<String> parts = smsManager.divideMessage(message);
+
 		for (Juror juror : jurors) {
 			
 			int retryCount = 0;
@@ -181,8 +170,7 @@ public class SurveyFacadeImpl implements SurveyFacade {
 			
 			while (!success && retryCount < SEND_SURVEY_RETRY_COUNT) {
 				try {
-					
-					ArrayList<String> parts = smsManager.divideMessage(message);
+
 					smsManager.sendMultipartTextMessage(juror.getPhoneNumber(), null, parts, null, null);
 					ContentValues values = new ContentValues();
 					values.put("address", juror.getPhoneNumber());
@@ -272,11 +260,9 @@ public class SurveyFacadeImpl implements SurveyFacade {
 				
 					Log.i("AMF", "Juror added...");	
 				}
-				
 
 				Log.i("AMF", "All jurors added!!");
-				
-				
+
 				// Answers
 				for (Answer answer : answers) {
 					answer.setSurvey(survey);
@@ -287,11 +273,8 @@ public class SurveyFacadeImpl implements SurveyFacade {
 				Log.i("AMF", "Survey persisted");
 			}
 		});
-		
-		
 	}
-	
-	
+
 	private JurorSurvey findJurorSurvey(Long surveyId, Long jurorId) {
 		Query<JurorSurvey> query = jurorSurveyRepository.getDao().queryBuilder()
 							 		  .where(Properties.SurveyId.eq(surveyId), Properties.JurorId.eq(jurorId))
@@ -305,5 +288,26 @@ public class SurveyFacadeImpl implements SurveyFacade {
 			return jurorSurveys.get(0);
 		}
 	}
+
+    private Survey saveOrUpdateSurvey(Survey survey) {
+        surveyRepository.getDao().insertOrReplace(survey);
+        return survey;
+    }
+
+    private void saveOrUpdateQuestion(Question question) {
+        questionRepository.getDao().insertOrReplace(question);
+    }
+
+    private void saveOrUpdateAnswer(Answer answer) {
+        answerRepository.getDao().insertOrReplace(answer);
+    }
+
+    private void saveOrUpdateJuror(Juror juror) {
+        jurorRepository.getDao().insertOrReplace(juror);
+    }
+
+    private void saveOrUpdateJurorSurvey(JurorSurvey jurorSurvey) {
+        jurorSurveyRepository.getDao().insertOrReplace(jurorSurvey);
+    }
 	
 }

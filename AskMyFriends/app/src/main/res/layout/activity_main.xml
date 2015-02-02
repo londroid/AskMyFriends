@@ -9,7 +9,7 @@
     tools:context="com.londroid.askmyfriends.activities.MainActivity" >
 
     <Button
-        android:id="@+id/newQuestion"
+        android:id="@+id/newSurvey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -20,14 +20,13 @@
         android:onClick="createNewQuestion" />
 
     <Button
-        android:id="@+id/results"
+        android:id="@+id/listSurveys"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/newQuestion"
-        android:layout_alignBottom="@+id/newQuestion"
+        android:layout_alignBaseline="@+id/newSurvey"
+        android:layout_alignBottom="@+id/newSurvey"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:text="@string/results"
-        android:onClick="seeResults" />
+        android:text="@string/list" />
 
 </RelativeLayout>

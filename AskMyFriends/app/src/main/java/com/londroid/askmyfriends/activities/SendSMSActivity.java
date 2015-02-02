@@ -1,10 +1,8 @@
 package com.londroid.askmyfriends.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -30,6 +28,9 @@ import com.londroid.askmyfriends.viewobjects.QuestionDto;
 import com.londroid.askmyfriends.viewobjects.SurveyDto;
 import com.londroid.askmyfriends.viewobjects.SurveyType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SendSMSActivity extends ActionBarActivity {
 
@@ -41,9 +42,11 @@ public class SendSMSActivity extends ActionBarActivity {
 	
 	public static final String EXTRA_SURVEY_ID_KEY = "surveyId";
 
+    public static final String CURRENT_SURVEY_DATA_KEY = "surveyCurrentData";
+
 	public static final String EXTRA_ACTION_KEY = "action";
 	
-	private SurveyDto selectedSurvey;
+	private SurveyDto currentSurvey;
 	
 	public void initData() {
 		// Get the helper (controller) to manage actions
@@ -53,7 +56,6 @@ public class SendSMSActivity extends ActionBarActivity {
 	public void setupViews() {
 		// Setup views
 		setContentView(R.layout.activity_send_sms);
-
 		mQuestion = (EditText) findViewById(R.id.etQuestion);
 		mOptionA = (EditText) findViewById(R.id.etOptionA);
 		mOptionB = (EditText) findViewById(R.id.etOptionB);
@@ -65,7 +67,10 @@ public class SendSMSActivity extends ActionBarActivity {
 		setupContactView(mFriend1);
 	
 	}
-	
+
+    /**
+     * Not used for the moment, to be used when the activity could be triggered with different purposes from a menu
+     */
 	public void initActivityAccordingToIntent() {
 		
 		Bundle bundle = getIntent().getExtras();
@@ -79,8 +84,9 @@ public class SendSMSActivity extends ActionBarActivity {
 				if (actionType == ActionType.EDIT_SURVEY) {
 					
 					Long surveyId = bundle.getLong(EXTRA_ACTION_KEY);
-					selectedSurvey = sendSmsHelper.getSurvey(surveyId);
+					currentSurvey = sendSmsHelper.getSurvey(surveyId);
 					fillUiWithSurvey();
+                    return;
 				}
 			}
 		}
@@ -91,12 +97,26 @@ public class SendSMSActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setupViews();
 		initData();
-		
+        restoreSurveyDataIfNeeded(savedInstanceState);
 	}
-		
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    protected void onSaveInstanceState(Bundle outState) {
+        //TODO: SurveyDto must implement parcelable in order to save state
+    }
+
+    private void restoreSurveyDataIfNeeded(Bundle savedInstanceInstanceState) {
+        if (savedInstanceInstanceState != null) {
+            currentSurvey = (SurveyDto) savedInstanceInstanceState.get(CURRENT_SURVEY_DATA_KEY);
+        }
+    }
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -104,17 +124,23 @@ public class SendSMSActivity extends ActionBarActivity {
 		return true;
 	}
 
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		
-		return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 	}
 	
 	/**
@@ -143,7 +169,7 @@ public class SendSMSActivity extends ActionBarActivity {
 		loaderManager.initLoader(0, null, contactLoader);
 		contactsView.setContactLoader(contactLoader);
 		
-		Log.w("AMF","Contacts view setup completed.");
+		Log.d("AMF","Contacts view setup completed.");
 	}
 	
 	/**
@@ -153,22 +179,31 @@ public class SendSMSActivity extends ActionBarActivity {
 	 */
 	public void sendSMS(View view) {
 		SurveyDto surveyDto = collectSurveyDataFromUi();
-		
 		try {
 			hideKeyboard();
 			long startTime = System.currentTimeMillis();
+            // It is not sending anything for now
 			sendSmsHelper.sendSMS(surveyDto);
 			long endTime = System.currentTimeMillis();
 			Log.i("AMF", "Sending and persisting survey took " + (endTime - startTime) + " ms");
-			Toast.makeText(this, "Survey successfully sent", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Survey successfully saved", Toast.LENGTH_SHORT).show();
+            showSurveysList();
 		} catch (Throwable t) {
 			Log.e("AMF", "Error sending survey", t);
-			Toast.makeText(this, "Error sending survey", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Error saving survey", Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
+    public void saveSurvey() {
+        //TODO: This would only save the survey in the phone to send later
+    }
+
+    private void showSurveysList() {
+        Intent intent = new Intent(this, ListSurveyActivity.class);
+        startActivity(intent);
+    }
 	 /**
-     * Hide the keyboard after a user has finished typing the url.
+     * Hide the keyboard after a user has finished typing
      */
     private void hideKeyboard() {
         InputMethodManager mgr =
@@ -278,12 +313,20 @@ public class SendSMSActivity extends ActionBarActivity {
 	}
 
 	private void fillUiWithSurvey() {
-		if (selectedSurvey != null) {
+		if (currentSurvey != null) {
 			//TODO: take selected object and fill UI with it
 		}
 	}
 	
 	private void fillUiWithDefaults() {
-		//TODO: reset or put default data in the UI
+		//TODO: reset or put default data in the UI - initial load
+        mQuestion.setText("");
+        mOptionA.setText("");
+        mOptionB.setText("");
+        mOptionC.setText("");
+        mOptionD.setText("");
+        mFriend1.setText("");
+        mFriend2.setText("");
+        mFriend3.setText("");
 	}
 }

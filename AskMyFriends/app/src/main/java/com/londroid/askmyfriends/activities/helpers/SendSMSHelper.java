@@ -1,8 +1,5 @@
 package com.londroid.askmyfriends.activities.helpers;
 
-import java.util.List;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -15,8 +12,11 @@ import com.londroid.askmyfriends.persistence.greendao.domain.Answer;
 import com.londroid.askmyfriends.persistence.greendao.domain.Juror;
 import com.londroid.askmyfriends.persistence.greendao.domain.Question;
 import com.londroid.askmyfriends.persistence.greendao.domain.Survey;
-import com.londroid.askmyfriends.viewobjects.QuestionDto;
 import com.londroid.askmyfriends.viewobjects.SurveyDto;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SendSMSHelper {
 
@@ -137,7 +137,60 @@ public class SendSMSHelper {
 	public SurveyDto getSurvey(Long surveyId) {
 		Survey survey = surveyFacade.findAndInitializeSurvey(surveyId);
 		// Map back -- Check jurors and answers to see if they are properly mapped back
-		SurveyDto surveyDto = mapperUtil.mapToSurveyDto(survey);
-		return surveyDto;
+		return mapperUtil.mapToSurveyDto(survey);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

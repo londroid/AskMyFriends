@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.londroid.askmyfriends.R;
@@ -15,6 +16,7 @@ import com.londroid.askmyfriends.R;
 public class MainActivity extends ActionBarActivity {
 
 	private SharedPreferences preferences;
+    private Button button;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,15 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+        button = (Button) findViewById(R.id.listSurveys);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listSurveys();
+            }
+        });
+
 		return true;
 	}
 
@@ -63,4 +74,9 @@ public class MainActivity extends ActionBarActivity {
 
 		Toast.makeText(this, results, Toast.LENGTH_SHORT).show();
 	}
+
+    public void listSurveys() {
+        Intent intent = new Intent(this, ListSurveyActivity.class);
+        startActivity(intent);
+    }
 }

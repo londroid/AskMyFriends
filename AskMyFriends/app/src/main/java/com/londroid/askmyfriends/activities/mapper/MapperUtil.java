@@ -1,8 +1,5 @@
 package com.londroid.askmyfriends.activities.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.londroid.askmyfriends.persistence.greendao.domain.Answer;
 import com.londroid.askmyfriends.persistence.greendao.domain.Juror;
 import com.londroid.askmyfriends.persistence.greendao.domain.JurorSurvey;
@@ -13,6 +10,9 @@ import com.londroid.askmyfriends.viewobjects.JurorDto;
 import com.londroid.askmyfriends.viewobjects.QuestionDto;
 import com.londroid.askmyfriends.viewobjects.SurveyDto;
 import com.londroid.askmyfriends.viewobjects.SurveyType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapperUtil {
 

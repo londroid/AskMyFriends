@@ -12,6 +12,8 @@ public interface SurveyFacade {
 	public Survey findAndInitializeSurvey(Long surveyId);
 	
 	public void sendSurvey(Survey survey, Question question, List<Juror> jurors, List<Answer> answers);
+
+    public List<Survey> findAllSurveys();
 	
 	public Juror findJurorByPhoneNumber(String phoneNumber);
 	

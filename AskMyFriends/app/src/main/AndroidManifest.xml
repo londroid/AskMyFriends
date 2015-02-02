@@ -35,6 +35,11 @@
             android:label="@string/app_name"
             android:permission="android.permission.SEND_SMS" >
         </activity>
+
+        <activity
+            android:name="com.londroid.askmyfriends.activities.ListSurveyActivity"
+            android:label="@string/app_name">
+        </activity>
         
         <activity
             android:name="com.londroid.askmyfriends.activities.MainActivity"

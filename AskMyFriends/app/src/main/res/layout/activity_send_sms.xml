@@ -166,17 +166,36 @@
                 android:layout_marginLeft="8dp"
                 android:gravity="center"
                 android:text="@string/questionMark" />
-            
-            <Button
-                android:id="@+id/btSendQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvFriend3"
-                android:layout_centerHorizontal="true"
-                android:onClick="sendSMS"
-                android:text="@string/send_question" />
-            
+
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+
+                <Button
+                    android:id="@+id/btSendQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="sendSMS"
+                    android:text="@string/send_question"/>
+
+                <Button
+                    android:id="@+id/btSaveForLater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save survey"/>
+
+             </LinearLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </ScrollView>
